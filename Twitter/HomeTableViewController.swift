@@ -8,40 +8,57 @@
 
 import UIKit
 
-class HomeTableViewController: UITableViewController {
+class HomeTableViewController: UITableViewController {     //type UItableview not regular controller so
+                                                    // dont need datasource/delegates.
     
-    var tweetArray = [NSDictionary]()
+    
+    var tweetArray = [NSDictionary]()  // nsdictionary unspecify type, dictionary is specify.
     var numberOfTweet: Int!
-
     let myrefreshControl = UIRefreshControl()
+   
     
-    override func viewDidLoad() {
+    
+    override func viewDidLoad() {       // called once
         super.viewDidLoad()
         loadTweets()
-        myrefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
+        myrefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged) // target:self
+        //        #selector(objc) - to our function to reload as the selector.
         tableView.refreshControl = myrefreshControl
     }
     
-    @objc func loadTweets() {
+
+    override func viewDidAppear(_ animated: Bool) {   //called everytime cus showing the view.
+        super.viewDidAppear(animated)       // always need call to super-class view controller
+        loadTweets()
+    }
+    
         
+    
+    @objc func loadTweets() {
         numberOfTweet = 20
         
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let myParams = ["count:": numberOfTweet]
+        let myParams = ["count:": numberOfTweet]     // twitterAPi takes optional parameter such as number of tweets as form of dictionary which is "count:" numberoftweet.
         
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: { (tweets: [NSDictionary]) in
             
+                            // this whole code is within closure of parameter if success.
+                            // NSdictionary here contains our tweets from twitterAPICaller
+                // hey when u create this parameter called tweets pls run this line of code. closure
             self.tweetArray.removeAll()
             for tweet in tweets {
                 self.tweetArray.append(tweet)
             }
-            self.tableView.reloadData()
-            self.myrefreshControl.endRefreshing()
+            self.tableView.reloadData()               // table field itselfs.
+            self.myrefreshControl.endRefreshing()       // end refreshing.
             
-        }, failure: { (Error) in
+        }, failure: { (Error) in                // if fail parameter.
             print("Could not retrieve tweets")
         })
     }
+    
+    
+    
     
     func loadMoreTweet(){
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
@@ -62,6 +79,10 @@ class HomeTableViewController: UITableViewController {
     }
     
     
+    
+    
+    
+    
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == tweetArray.count {
             loadMoreTweet()
@@ -70,8 +91,6 @@ class HomeTableViewController: UITableViewController {
     
     
     
-    
-
     @IBAction func onLogout(_ sender: Any) {
         TwitterAPICaller.client?.logout()
         self.dismiss(animated: true, completion: nil)   // screen dismiss itself. nil at completion nothing:
@@ -79,12 +98,14 @@ class HomeTableViewController: UITableViewController {
         UserDefaults.standard.set(false, forKey: "userLoggedIn")
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as! TweetCell
         
         let user = tweetArray[indexPath.row]["user"] as! NSDictionary
-        
-        cell.userNameLabel.text = user["name"] as? String
+                                                                //dictionary under dictionary is "name"
+        cell.userNameLabel.text = user["name"] as? String     //user within another dictionary ["name"]
         cell.tweetContent.text = tweetArray[indexPath.row]["text"] as? String
         
         
@@ -96,8 +117,9 @@ class HomeTableViewController: UITableViewController {
             cell.profileImageView.image = UIImage(data: imageData)
         }
         
-        return cell
+        return cell     // -> returns UITableViewCell
     }
+    
     
     
     // MARK: - Table view data source
