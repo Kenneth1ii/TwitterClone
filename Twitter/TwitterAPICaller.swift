@@ -26,7 +26,6 @@ class TwitterAPICaller: BDBOAuth1SessionManager {    // caches tokens
     
 // TwitterAPICaller.client?.requestSerializer.saveAccessToken(accessToken) - underhood after success used to form all request.
     
-    
     // request get
 /* TwitterAPICaller.client?.get("https://api.twitter.com/1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (operation: URLSessionDataTask, response: Any?) in
     print("\(response)")
@@ -107,4 +106,44 @@ class TwitterAPICaller: BDBOAuth1SessionManager {    // caches tokens
         })
     }
     
+    func createFavorited(postID:Int, success: @escaping ()-> (), failure: @escaping(Error) -> () ) {
+        let url = "https://api.twitter.com/1.1/favorites/create.json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":postID], progress: nil, success: { (URLSessionDataTask,response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?,error: Error) in
+            failure(error)
+        })
+    }
+    
+    func destoryFavorited(postID:Int, success: @escaping ()-> (), failure: @escaping(Error) -> () ) {
+        let url = "https://api.twitter.com/1.1/favorites/destroy.json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":postID], progress: nil, success: { (URLSessionDataTask,response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?,error: Error) in
+            failure(error)
+        })
+    }
+    
+    func retweet(postID:Int, success: @escaping ()-> (), failure: @escaping(Error) -> () ) {
+        let url = "https://api.twitter.com/1.1/statuses/retweet/\(postID).json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":postID], progress: nil, success: { (URLSessionDataTask,response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?,error: Error) in
+            failure(error)
+        })
+    }
+ 
+    
+    func unRetweet(postID:Int, success: @escaping ()-> (), failure: @escaping(Error) -> () ) {
+        let url = "https://api.twitter.com/1.1/statuses/unretweet/\(postID).json"
+        
+        TwitterAPICaller.client?.post(url, parameters: ["id":postID], progress: nil, success: { (URLSessionDataTask,response: Any?) in
+            success()
+        }, failure: { (task: URLSessionDataTask?,error: Error) in
+            failure(error)
+        })
+    }
 }

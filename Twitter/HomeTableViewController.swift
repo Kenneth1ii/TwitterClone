@@ -24,6 +24,8 @@ class HomeTableViewController: UITableViewController {     //type UItableview no
         myrefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged) // target:self
         //        #selector(objc) - to our function to reload as the selector.
         tableView.refreshControl = myrefreshControl
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 160
     }
     
 
@@ -116,6 +118,10 @@ class HomeTableViewController: UITableViewController {     //type UItableview no
         if let imageData = data {
             cell.profileImageView.image = UIImage(data: imageData)
         }
+        
+        cell.setfavorited(tweetArray[indexPath.row]["favorited"] as! Bool)
+        cell.tweetID = tweetArray[indexPath.row]["id"] as! Int
+        cell.setRetweeted(tweetArray[indexPath.row]["retweeted"] as! Bool)
         
         return cell     // -> returns UITableViewCell
     }
