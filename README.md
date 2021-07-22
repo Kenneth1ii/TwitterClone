@@ -3,6 +3,7 @@
 Here's a walkthrough of implemented user stories:
 
 <img src='http://g.recordit.co/n7OBz77DXP.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
 The following **required** functionality is completed:
 - [x] User can compose a tweet. (4pts)
 - [x] User can favorite a tweet. (4pts)
