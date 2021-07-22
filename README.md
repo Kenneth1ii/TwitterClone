@@ -5,6 +5,7 @@ The following **required** functionality is completed:
 - [x] User can retweet a tweet. (2pts)
 ## Video Walkthrough
 Here's a walkthrough of implemented user stories:
+
 <img src='http://g.recordit.co/n7OBz77DXP.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 # Project 3 - *Twitter CLone*
